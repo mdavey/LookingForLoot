@@ -1,0 +1,8 @@
+## Interface: 70000
+## Title: LookingForLoot
+## Author: ardren@exceptionallyaverage.net
+## Version: L1
+## Notes: LFG/LFR Reward and stuff
+## SavedVariablesPerCharacter: LookingForLootSettings
+
+LookingForLoot.lua
