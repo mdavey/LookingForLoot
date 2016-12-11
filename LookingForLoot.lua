@@ -132,8 +132,8 @@ SlashCmdList['LookingForLoot'] = function(msg, editbox)
         LookingForLootSettings.Enabled = true
     else
         print('LookingForLoot (version: |cFFFFD000' .. GetAddOnMetadata('LookingForLoot', 'Version') .. '|r) - Commands:')
-		print('  /lfl show - Announce messages')
-		print('  /lfl hide - Supress messages')
+        print('  /lfl show - Announce messages')
+        print('  /lfl hide - Supress messages')
     end
 end
 
