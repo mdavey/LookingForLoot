@@ -63,9 +63,9 @@ local lfgScanner = function(...)
             printUpdate('Healer', randomDuneonDetails['name'], true)
         end
 
-        if randomDuneonDetails['forHealer'] == true and forDamage == false then
+        if randomDuneonDetails['forDamage'] == true and forDamage == false then
             printUpdate('Damage', randomDuneonDetails['name'], false)
-        elseif randomDuneonDetails['forHealer'] == false and forDamage == true then
+        elseif randomDuneonDetails['forDamage'] == false and forDamage == true then
             printUpdate('Damage', randomDuneonDetails['name'], true)
         end
 
