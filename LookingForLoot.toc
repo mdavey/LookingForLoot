@@ -1,7 +1,7 @@
 ## Interface: 70000
 ## Title: LookingForLoot
 ## Author: ardren@exceptionallyaverage.net
-## Version: L1
+## Version: L2
 ## Notes: LFG/LFR Reward and stuff
 ## SavedVariablesPerCharacter: LookingForLootSettings
 

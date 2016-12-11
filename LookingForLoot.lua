@@ -1,12 +1,29 @@
 
+local COLOR_CLASS_NEEDED = 'FF00C000'   -- dark greenish
+local COLOR_CLASS_FULL = 'FFC00000'     -- dark red
+local COLOR_INSTANCE_NAME = 'FFFFD000'  -- yellowish
+local SOUND_ID_NEEDED = 1277 -- fx_chest_openwooden
+
+
+local printUpdate = function(className, instanceName, isNeeded)
+    local classColor = COLOR_CLASS_FULL
+    local isNeededString = 'Full'
+
+    if isNeeded then
+        isNeededString = 'Needed'
+        classColor = COLOR_CLASS_NEEDED
+        PlaySoundKitID(SOUND_ID_NEEDED)
+    end
+
+    print(string.format('LookingForLoot:  |c%s%s|r  -  |c%s%s %s|r', COLOR_INSTANCE_NAME, instanceName, classColor, className, isNeededString))
+end
+
 
 -- Call every 10 seconds till the end of time
 local lfgScannerTimer = C_Timer.NewTicker(10, function()
     RequestLFDPlayerLockInfo()
 end, nil)
 
-
--- No args passed
 
 local lfgState = {}
 local lfgStateFirstRun = true
@@ -35,24 +52,21 @@ local lfgScanner = function(...)
         local eligible, forTank, forHealer, forDamage, itemCount, money, xp = GetLFGRoleShortageRewards(randomDungeonId, 1)
 
         if randomDuneonDetails['forTank'] == true and forTank == false then
-            print('LookingForLoot LFG Scanner  --  |cFFC00000Tank Full|r  for  |cFFFFD000' .. randomDuneonDetails['name'] .. '|r')
+            printUpdate('Tank', randomDuneonDetails['name'], false)
         elseif randomDuneonDetails['forTank'] == false and forTank == true then
-            print('LookingForLoot LFG Scanner  --  |cFF00C000Tank Needeed|r  for  |cFFFFD000' .. randomDuneonDetails['name'] .. '|r')
-            PlaySoundKitID(1277) -- fx_chest_openwooden
+            printUpdate('Tank', randomDuneonDetails['name'], true)
         end
 
         if randomDuneonDetails['forHealer'] == true and forHealer == false then
-            print('LookingForLoot LFG Scanner  --  |cFFC00000Healer Full|r  for  |cFFFFD000' .. randomDuneonDetails['name'] .. '|r')
+            printUpdate('Healer', randomDuneonDetails['name'], false)
         elseif randomDuneonDetails['forHealer'] == false and forHealer == true then
-            print('LookingForLoot LFG Scanner  --  |cFF00C000Healer Needeed|r  for  |cFFFFD000' .. randomDuneonDetails['name'] .. '|r')
-            PlaySoundKitID(1277) -- fx_chest_openwooden
+            printUpdate('Healer', randomDuneonDetails['name'], true)
         end
 
-        if randomDuneonDetails['forDamage'] == true and forDamage == false then
-            print('LookingForLoot LFG Scanner  --  |cFFC00000Damage Full|r  for  |cFFFFD000' .. randomDuneonDetails['name'] .. '|r')
-        elseif randomDuneonDetails['forDamage'] == false and forDamage == true then
-            print('LookingForLoot LFG Scanner  --  |cFF00C000Damage Needeed|r  for  |cFFFFD000' .. randomDuneonDetails['name'] .. '|r')
-            PlaySoundKitID(1277) -- fx_chest_openwooden
+        if randomDuneonDetails['forHealer'] == true and forDamage == false then
+            printUpdate('Damage', randomDuneonDetails['name'], false)
+        elseif randomDuneonDetails['forHealer'] == false and forDamage == true then
+            printUpdate('Damage', randomDuneonDetails['name'], true)
         end
 
         lfgState[randomDungeonId]['forTank'] = forTank
@@ -77,26 +91,25 @@ local rfScanner = function(...)
             end
             
             if rfState[rf_id]['forTank'] == false and forTank == true then
-                print('LookingForLoot RF Scanner  --  |cFF00C000Tank Needeed|r  for  |cFFFFD000' .. rf_name .. '|r')
+                printUpdate('Tank', rf_name, true)
             elseif rfState[rf_id]['forTank'] == true and forTank == false then
-                print('LookingForLoot RF Scanner  --  |cFF00C000Tank Full|r  for  |cFFFFD000' .. rf_name .. '|r')
+                printUpdate('Tank', rf_name, false)
             end
 
             if rfState[rf_id]['forHealer'] == false and forHealer == true then
-                print('LookingForLoot RF Scanner  --  |cFF00C000Healer Needeed|r  for  |cFFFFD000' .. rf_name .. '|r')
+                printUpdate('Healer', rf_name, true)
             elseif rfState[rf_id]['forHealer'] == true and forHealer == false then
-                print('LookingForLoot RF Scanner  --  |cFF00C000Healer Full|r  for  |cFFFFD000' .. rf_name .. '|r')
+                printUpdate('Healer', rf_name, false)
             end
             
             if rfState[rf_id]['forDamage'] == false and forDamage == true then
-                print('LookingForLoot RF Scanner  --  |cFF00C000Damage Needeed|r  for  |cFFFFD000' .. rf_name .. '|r')
+                printUpdate('Damage', rf_name, true)
             elseif rfState[rf_id]['forDamage'] == true and forDamage == false then
-                print('LookingForLoot RF Scanner  --  |cFF00C000Damage Full|r  for  |cFFFFD000' .. rf_name .. '|r')
+                printUpdate('Damage', rf_name, false)
             end
         end
                 
         rfState[rf_id] = {forTank=forTank, forHealer=forHealer, forDamage=forDamage}
-        
     end
 end
 
